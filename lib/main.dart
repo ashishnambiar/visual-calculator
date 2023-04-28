@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  RepaintBoundary(child: SandBox()),
+                  Expanded(child: RepaintBoundary(child: SandBox())),
                   ElevatedButton(
                     onPressed: () {},
                     child: Text("button"),
