@@ -53,7 +53,7 @@ class SingleRenderNodeGroup {
       Offset _pos = position;
       for (var node in nodes.reversed) {
         if (node.isTurnstileHeld) continue;
-        if (node.rect.contains(position)) { 
+        if (node.rect.contains(position)) {
           _pos = nodes.last.holdingTurnstile == TurnstileSelected.output
               ? node.inputPosition
               : node.outputPosition;

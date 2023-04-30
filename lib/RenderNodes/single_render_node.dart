@@ -42,7 +42,7 @@ class SingleRenderNode {
 
   void drawNode(Canvas canvas) {
     Paint rectPaint = Paint()
-      ..color = this.color ?? Colors.red // .withOpacity(0.8)
+      ..color = color ?? Colors.red // .withOpacity(0.8)
       ..style = PaintingStyle.fill;
     Paint pointPaint = Paint()
       ..color = Colors.grey[700]!
@@ -103,6 +103,7 @@ class SingleRenderNode {
     holdOffset = null;
     holdingNode = false;
     holdingTurnstile = TurnstileSelected.none;
+    threadPosition = Offset.zero;
   }
 }
 

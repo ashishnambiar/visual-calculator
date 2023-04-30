@@ -32,7 +32,7 @@ class SandBoxPainter extends CustomPainter {
           ..strokeCap = StrokeCap.round;
         canvas.drawLine(
           t.turnstilePosition ?? t.threadPosition,
-          t.threadPosition,
+          t.threadPosition == Offset.zero? positionChanged.value : t.threadPosition ,
           threadPaint,
         );
       }
