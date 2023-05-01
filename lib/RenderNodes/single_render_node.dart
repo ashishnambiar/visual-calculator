@@ -4,8 +4,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class SingleRenderNode {
-  int get id => hashCode;
-
+  // variable initializations
+  int id = 0;
   double radius = 0;
   Offset size = const Offset(130, 130);
   Offset nodePosition = Offset.zero;
@@ -38,7 +38,14 @@ class SingleRenderNode {
 
   SingleRenderNode({
     this.color,
-  });
+  }){
+    id = hashCode;
+  }
+
+  @override
+    String toString() {
+      return "SingleRenderNode: {id: $id}";
+    }
 
   void drawNode(Canvas canvas) {
     Paint rectPaint = Paint()

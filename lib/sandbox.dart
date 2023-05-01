@@ -72,6 +72,7 @@ class _SandBoxState extends State<SandBox> {
               unitSize: 50,
               positionChanged: pos,
               thing: nodeGroup.nodes,
+              connections: nodeGroup.connections,
             ),
           ),
         ),

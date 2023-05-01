@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
 import 'RenderNodes/single_render_node.dart';
+import 'RenderNodes/single_render_node_group.dart';
 
 class SandBoxPainter extends CustomPainter {
   int unitSize;
   ValueNotifier<Offset> positionChanged;
   List<SingleRenderNode> thing;
+  RenderNodeConnections connections;
   SandBoxPainter({
     required this.unitSize,
     required this.positionChanged,
     required this.thing,
+    required this.connections,
   }) : super(repaint: positionChanged);
 
   @override
@@ -23,8 +26,11 @@ class SandBoxPainter extends CustomPainter {
       t.drawNode(canvas);
     }
 
+    connections.drawConnectedThreads(canvas);
+
     for (var t in thing) {
       if (t.isTurnstileHeld) {
+        if (t.threadPosition == Offset.zero) break;
         Paint threadPaint = Paint()
           ..color = Colors.black
           ..style = PaintingStyle.stroke
@@ -32,7 +38,8 @@ class SandBoxPainter extends CustomPainter {
           ..strokeCap = StrokeCap.round;
         canvas.drawLine(
           t.turnstilePosition ?? t.threadPosition,
-          t.threadPosition == Offset.zero? positionChanged.value : t.threadPosition ,
+          // t.threadPosition == Offset.zero? positionChanged.value :
+          t.threadPosition,
           threadPaint,
         );
       }
