@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:visual_calculator/RenderNodes/single_render_node.dart';
 
 class SingleRenderNodeGroup {
@@ -62,7 +63,6 @@ class SingleRenderNodeGroup {
               : node.outputPosition;
           threadConnection.connectionPending = true;
           threadConnection.connectingNode = node;
-
           print("[${DateTime.now()}]ConnectionPending");
           break;
         }
@@ -86,7 +86,7 @@ class SingleRenderNodeGroup {
     if (threadConnection.connectionPending && nodes.last.isTurnstileHeld) {
       late SingleRenderNode input;
       late SingleRenderNode output;
-      if (nodes.last.holdingTurnstile == TurnstileSelected.input) {
+      if (nodes.last.holdingTurnstile == TurnstileSelected.output) {
         input = nodes.last;
         output = threadConnection.connectingNode!;
       } else {
@@ -127,13 +127,17 @@ class RenderNodeConnections {
     }
   }
 
-  void connect(SingleRenderNode input, SingleRenderNode output) {
-    final int id = output.id;
+  void connect(SingleRenderNode output, SingleRenderNode input) {
+    final int inputId = input.id;
+    final int outputId = output.id;
+    print("input id: $inputId");
+    print("output: ${connections[inputId]!.output}");
+    // Do not create a cyclic flow
+    if (connections[outputId]!.inputs.contains(inputId)) return;
+    connections[inputId] = IConnections(
+        output: connections[inputId]!.node,
+        inputs: [...connections[inputId]!.inputs, output.id]);
     print(connections);
-    connections[id] = IConnections(output: connections[id]!.output, inputs: [
-      // ...connections[output]!.inputs,
-      input.id
-    ]);
   }
 
   drawConnectedThreads(Canvas canvas) {
@@ -142,8 +146,8 @@ class RenderNodeConnections {
       for (var inp in connections[e]!.inputs) {
         final input = connections[inp]!.node;
         canvas.drawLine(
-          input.inputPosition,
-          output.outputPosition,
+          input.outputPosition,
+          output.inputPosition,
           threadPaint,
         );
       }
@@ -181,7 +185,7 @@ class IConnections {
 
   @override
   String toString() {
-    return "\nInterface_Connection: {input: $inputs,output: $output}";
+    return "Interface_Connection: {input: $inputs,output: $output}\n";
   }
 }
 
